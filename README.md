@@ -1,4 +1,4 @@
-# Discord Rich Presence Go
+# Current Vibe
 
 macOS用のDiscord Rich Presence CLIツール。アクティブなアプリに応じてDiscordのステータスを自動更新します。
 
