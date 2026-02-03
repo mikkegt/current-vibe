@@ -1,5 +1,9 @@
 # Current Vibe
 
+<p align="center">
+  <img src="assets/img.png" width="200" alt="Current Vibe">
+</p>
+
 macOS用のDiscord Rich Presence CLIツール。アクティブなアプリに応じてDiscordのステータスを自動更新します。
 
 ## 対応アプリ
