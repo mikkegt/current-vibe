@@ -1,0 +1,65 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+)
+
+func main() {
+	appID := os.Getenv("DISCORD_APP_ID")
+	if appID == "" {
+		log.Fatal("DISCORD_APP_ID environment variable is required")
+	}
+
+	fmt.Println("🎮 Discord Rich Presence を起動中...")
+
+	if err := Connect(appID); err != nil {
+		log.Fatalf("Discordへの接続に失敗しました: %v", err)
+	}
+	defer Disconnect()
+
+	fmt.Println("✅ Discordに接続しました！")
+
+	// シグナルハンドリング
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+	// 初回更新
+	updatePresence()
+
+	// 5秒間隔でステータス更新
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			updatePresence()
+		case <-sigChan:
+			fmt.Println("\n👋 終了します...")
+			return
+		}
+	}
+}
+
+func updatePresence() {
+	app := DetectActiveApp()
+
+	var state string
+
+	if app != nil {
+		state = fmt.Sprintf("%s %s", app.Emoji, app.DisplayName)
+		fmt.Printf("🔄 %s\n", state)
+	} else {
+		state = GetRandomMessage()
+		fmt.Printf("🔄 %s\n", state)
+	}
+
+	if err := UpdateStatus(state); err != nil {
+		fmt.Printf("⚠️  ステータス更新エラー: %v\n", err)
+	}
+}

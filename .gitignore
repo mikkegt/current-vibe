@@ -1,0 +1,12 @@
+# Binary
+discord-presence
+
+# IDE
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Environment
+.env
