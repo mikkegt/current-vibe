@@ -153,7 +153,7 @@ func GetRandomMessage() string
 
 ```bash
 # ビルド
-go build -o discord-presence .
+go build -o current-vibe .
 
 # 実行
 export DISCORD_APP_ID=1468233551391494293

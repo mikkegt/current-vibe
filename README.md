@@ -28,20 +28,20 @@ macOS用のDiscord Rich Presence CLIツール。アクティブなアプリに�
 ### 2. ビルド
 
 ```bash
-go build -o discord-presence .
+go build -o current-vibe .
 ```
 
 ### 3. 実行
 
 ```bash
 export DISCORD_APP_ID=あなたのアプリID
-./discord-presence
+./current-vibe
 ```
 
 または1行で：
 
 ```bash
-DISCORD_APP_ID=あなたのアプリID ./discord-presence
+DISCORD_APP_ID=あなたのアプリID ./current-vibe
 ```
 
 ## 終了
