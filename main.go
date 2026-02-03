@@ -29,7 +29,9 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	// 初回更新
-	updatePresence()
+	if err := updatePresence(); err != nil {
+		log.Fatalf("ステータス更新に失敗しました: %v", err)
+	}
 
 	// 5秒間隔でステータス更新
 	ticker := time.NewTicker(5 * time.Second)
@@ -38,7 +40,10 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			updatePresence()
+			if err := updatePresence(); err != nil {
+				fmt.Println("\n⚠️  Discordとの接続が切れました。終了します...")
+				return
+			}
 		case <-sigChan:
 			fmt.Println("\n👋 終了します...")
 			return
@@ -46,7 +51,7 @@ func main() {
 	}
 }
 
-func updatePresence() {
+func updatePresence() error {
 	app := DetectActiveApp()
 
 	var state string
@@ -59,7 +64,5 @@ func updatePresence() {
 		fmt.Printf("🔄 %s\n", state)
 	}
 
-	if err := UpdateStatus(state); err != nil {
-		fmt.Printf("⚠️  ステータス更新エラー: %v\n", err)
-	}
+	return UpdateStatus(state)
 }
